@@ -1,16 +1,20 @@
 # Water:
 
-# (1) This program generates the data input file for LAMMPS which consist in a: 
-(1.1) A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential
-(1.2) A random distribution of TIP4P/2005 water molecules
+# (1) Package content:
+**(1.1)** The program **solid_coordinates_Water.cpp**. This program generates the initial configuration file (data input file) for **LAMMPS** which consist in a: 
 
-# (2) Operate with the program: solid_coordinates_Water.cpp
-(2.1) Adjust the parameters of the membrane and quantity of water molecules:
+- A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential
+- A random distribution of TIP4P/2005 water molecules
+
+**(1.2)** The input files for LAMMPS to run pre-equilibration, equilibration and first PLUMED experiments to detect the water molecules inside the membrane.
+
+# (2) How to generate initial configuration: solid_coordinates_Water.cpp
+**(2.1)** Adjust the parameters of the membrane and quantity of water molecules:
 - Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=3.54575 Angstroms. So the membrane real measure is **60X60X50** A^3.
 - radius=**10** Angstroms (not in rm units). This is the pore radius
 - molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=1) but this introduces unstable configurations and the dynamics could explode. In general for this box 2000 molecules gives a good compromise between high density and stability. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
 
-(2.2) The compilation should use the c++ 11 standard:
+**(2.2)** The compilation should use the c++ 11 standard:
 
 - g++ -std=c++11 solid_coordinates_Water.cpp
 
