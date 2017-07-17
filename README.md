@@ -19,21 +19,23 @@
 
 (3.2) LAMMPS minimization can not be used with the rigid bonds we want to use otherwise use LAMMPS relaxation previously to perform the dynamics.
 
-(3.3) First use a NVT simulation with a small integration step. You can use the following LAMMPS input file to achieve this:
+(3.3) Perform an NVT simulation with a small integration step to pre-equilibrate the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
 
-- in.solid                    ----> NVT with small integration step (dt=0.001 fs, 50000 steps)
-- in.solid_restart            ----> NVT with increased integration step (dt=0.1 fs, 50000 steps)
+- in.solid                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
+- in.solid_restart            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
 
-(3.4) Once the water is *equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density.
+(3.4) Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system.
 
-- in.solid_restart_barostat   ----> NPT to converge to the right density (dt=0.1 fs, 1000000 steps)
+- in.solid_restart_barostat   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
 # (5) Detect water molecules inside the pore with PLUMED.
 (5.1) We first use the utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
 
 (5.2) One can accomplish this using the following provided **PLUMED** and **LAMMPS** input files:
 
-- in.solid_restart_plumed   ----> NPT (dt=2.0 fs, X steps)
+- in.solid_restart_plumed   ----> NPT (dt=**2.0** fs we can use this larger step now provided the simulation is in equilibrium, **X** steps)
 
 - This LAMMPS input file will make use of the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
+
+# (6) Control the number of water molecules inside the pore with PLUMED.
 
