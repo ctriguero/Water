@@ -12,17 +12,22 @@
 
 (2.2) The compilation should use the c++11 version:
 
-g++ -std=c++11 solid_coordinates_Water.cpp
+- g++ -std=c++11 solid_coordinates_Water.cpp
 
 # (3) Stabilize simulation with LAMMPS
-(3.1) Use the script run.sh to run the LAMMPS simulations it has the paths to LAMMPS.
+(3.1) Use the script run.sh to run the LAMMPS simulations it has the paths to LAMMPS
+
 (3.2) LAMMPS minimization can not be used with the rigid bonds we want to use otherwise use LAMMPS relaxation previously to perform the dynamics.
+
 (3.3) First use a NVT simulation with a small integration step.
+
 (3.4) Once the water is equilibrated we can use an anisotropic barostat to converge into the right water density.
 
 # (4) You can use concatenated the following input lammps files to achieve this:
 (4.1) in.solid                    ----> NVT with small integration step (dt=0.001 fs, 50000 steps)
+
 (4.2) in.solid_restart            ----> NVT with increased integration step (dt=0.1 fs, 50000 steps)
+
 (4.3) in.solid_restart_barostat   ----> NPT to converge to the right density (dt=0.1 fs, 1000000 steps)
 
 # (5) We can now start to try with plumed inenvelope to detect molecules inside the pore
