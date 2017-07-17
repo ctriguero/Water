@@ -34,3 +34,5 @@
 
 (5.1) in.solid_restart_plumed   ----> NPT to converge to the right density (dt=2.0 fs, X steps)
 
+- This run will make use of the plumed.dat file where the instructions for detecting molecules inside the pore are specified.
+
