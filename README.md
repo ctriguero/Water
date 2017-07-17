@@ -19,20 +19,19 @@
 
 (3.2) LAMMPS minimization can not be used with the rigid bonds we want to use otherwise use LAMMPS relaxation previously to perform the dynamics.
 
-(3.3) First use a NVT simulation with a small integration step.
+(3.3) First use a NVT simulation with a small integration step. You can use the following LAMMPS input file to achieve this:
 
-(3.4) Once the water is equilibrated we can use an anisotropic barostat to converge into the right water density.
+- in.solid                    ----> NVT with small integration step (dt=0.001 fs, 50000 steps)
+- in.solid_restart            ----> NVT with increased integration step (dt=0.1 fs, 50000 steps)
 
-# (4) You can use concatenated the following input lammps files to achieve this:
-(4.1) in.solid                    ----> NVT with small integration step (dt=0.001 fs, 50000 steps)
+(3.4) Once the water is *equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density.
 
-(4.2) in.solid_restart            ----> NVT with increased integration step (dt=0.1 fs, 50000 steps)
+- in.solid_restart_barostat   ----> NPT to converge to the right density (dt=0.1 fs, 1000000 steps)
 
-(4.3) in.solid_restart_barostat   ----> NPT to converge to the right density (dt=0.1 fs, 1000000 steps)
+# (5) Detect water molecules inside the pore with plumed.
+(5.1) we first use the utility [inenvelope](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore.
 
-# (5) We can now start to try with plumed inenvelope to detect molecules inside the pore
-
-(5.1) in.solid_restart_plumed   ----> NPT to converge to the right density (dt=2.0 fs, X steps)
+- in.solid_restart_plumed   ----> NPT to converge to the right density (dt=2.0 fs, X steps)
 
 - This run will make use of the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
 
