@@ -10,7 +10,7 @@
 - radius=**10** Angstroms (not in rm units). This is the pore radius
 - molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=1) but this introduces unstable configurations and the dynamics could explode. In general for this box 2000 molecules gives a good compromise between high density and stability. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
 
-(2.2) The compilation should use the c++11 version:
+(2.2) The compilation should use the c++ 11 standard:
 
 - g++ -std=c++11 solid_coordinates_Water.cpp
 
@@ -29,10 +29,11 @@
 - in.solid_restart_barostat   ----> NPT to converge to the right density (dt=0.1 fs, 1000000 steps)
 
 # (5) Detect water molecules inside the pore with PLUMED.
-(5.1) we first use the utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore.
-(5.2) One can use the following provided **PLUMED** and **LAMMPS** input files to accomplish this:
+(5.1) We first use the utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
 
-- in.solid_restart_plumed   ----> NPT to converge to the right density (dt=2.0 fs, X steps)
+(5.2) One can accomplish this using the following provided **PLUMED** and **LAMMPS** input files:
+
+- in.solid_restart_plumed   ----> NPT (dt=2.0 fs, X steps)
 
 - This LAMMPS input file will make use of the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
 
