@@ -22,6 +22,8 @@ g++ -std=c++11 solid_coordinates_Water.cpp
 (4) You can use concatenated the following input lammps files to achieve this:
 
 in.solid                    ----> NVT with small integration step
+
 in.solid_restart            ----> NVT with increased integration step
+
 in.solid_restart_barostat   ----> NPT to converge to the right density
 
