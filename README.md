@@ -7,7 +7,7 @@
 # (2) Operate with the program: solid_coordinates_Water.cpp
 (2.1) Adjust the parameters of the membrane and quantity of water molecules:
 - Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=3.54575 Angstroms. So the membrane real measure is **60X60X50** A^3.
-- radius=**10**, again in rm units. This is the pore radius
+- radius=**10** Angstroms (not in rm units). This is the pore radius
 - molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=1) but this introduces unstable configurations and the dynamics could explode. In general for this box 2000 molecules gives a good compromise between high density and stability. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
 
 (2.2) The compilation should use the c++11 version:
