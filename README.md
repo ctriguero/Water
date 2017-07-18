@@ -45,7 +45,7 @@
 
 - Input file: **in.solid_restart_plumed**   ----> NPT (dt=**2.0** fs we can use this larger step now provided the simulation is in equilibrium, **X** steps)
 
-- This **LAMMPS** input file will make use of the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
+- This **LAMMPS** input file will make use of the *fix plumed* which is defined in the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
 
 # (6) Control the number of water molecules inside the pore with PLUMED.
 
