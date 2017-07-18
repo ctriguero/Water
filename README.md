@@ -3,13 +3,12 @@
 # (1) Package content:
 **(1.1)** The program **solid_coordinates_Water.cpp**. 
 - This program generates the initial configuration file (data input file) for **LAMMPS** which consist of a:
-
--- A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential.
--- A random distribution of TIP4P/2005 water molecules. With all the bonds and angles defined for LAMMPS.
+- A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential.
+- A random distribution of TIP4P/2005 water molecules. With all the bonds and angles defined for LAMMPS.
 
 **(1.2)** The input files for LAMMPS to run pre-equilibration, equilibration and first PLUMED experiments to detect the water molecules inside the membrane.
 
-# (2) How to generate initial configuration: solid_coordinates_Water.cpp
+# (2) Initial configuration: solid_coordinates_Water.cpp
 **(2.1)** Adjust the parameters of the membrane and quantity of water molecules:
 - Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=3.54575 Angstroms. So the membrane real measure is **60X60X50** A^3.
 - radius=**10** Angstroms (not in rm units). This is the pore radius
