@@ -18,6 +18,11 @@
 
 - g++ -std=c++11 solid_coordinates_Water.cpp
 
+**(2.3)** **Run**: The program should run in less than a minute. It will generate two outputs:
+
+- **solid.data**: This is the data file for **LAMMPS**
+- **config.xyz**: This is an xyz file to visualize the initial configuration, for example with [vmd](http://www.ks.uiuc.edu/Research/vmd/).
+
 # (3) Stabilize simulation with LAMMPS
 **(3.1)** Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
 
