@@ -25,16 +25,16 @@
 
 # (3) Stabilize simulation with LAMMPS
 
-**(3.2)** **Note 1**: **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
+**Note 1**: **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
 
-**(3.1)** **Note 2**: Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
+**Note 2**: Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
 
-**(3.3)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
+**(3.1)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
 
 - in.solid                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
 - in.solid_restart            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
 
-**(3.4)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system.
+**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system.
 
 - in.solid_restart_barostat   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
