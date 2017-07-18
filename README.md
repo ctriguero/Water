@@ -20,7 +20,7 @@
 
 **(2.3)** **Run**: The program should run in less than a minute. It will generate two outputs:
 
-- **solid.data**: This is the data file for **LAMMPS**
+- **solid.data**: This is the initial configuration data file for **LAMMPS**.
 - **config.xyz**: This is an xyz file to visualize the initial configuration, for example with [vmd](http://www.ks.uiuc.edu/Research/vmd/).
 
 # (3) Stabilize simulation with LAMMPS
