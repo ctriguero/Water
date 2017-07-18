@@ -23,7 +23,7 @@
 - **solid.data**: This is the initial configuration data file for **LAMMPS**.
 - **config.xyz**: This is an xyz file to visualize the initial configuration, for example with [vmd](http://www.ks.uiuc.edu/Research/vmd/).
 
-# (3) Stabilize simulation with LAMMPS
+# (3) Stabilize/Equilibrate the configuration with LAMMPS
 
 **Note 1**: **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
 
