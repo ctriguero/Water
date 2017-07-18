@@ -6,7 +6,7 @@
 - A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential.
 - A random distribution of **TIP4P/2005** water molecules. With all the bonds and angles defined for **LAMMPS**.
 
-**(1.2)** The **input files** for **LAMMPS** to run *pre-equilibration*, *equilibration* and first **PLUMED** experiments to detect the water molecules inside the membrane.
+**(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
 
 # (2) Initial configuration: solid_coordinates_Water.cpp
 **(2.1)** Adjust the size parameters of the membrane and quantity of water molecules:
