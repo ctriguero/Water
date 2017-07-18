@@ -2,28 +2,28 @@
 
 # (1) Package content:
 **(1.1)** The program **solid_coordinates_Water.cpp**. 
-- This program generates the initial configuration file (data input file) for **LAMMPS** which consist of a:
+- This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a:
 - A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential.
-- A random distribution of TIP4P/2005 water molecules. With all the bonds and angles defined for LAMMPS.
+- A random distribution of **TIP4P/2005** water molecules. With all the bonds and angles defined for **LAMMPS**.
 
-**(1.2)** The input files for LAMMPS to run pre-equilibration, equilibration and first PLUMED experiments to detect the water molecules inside the membrane.
+**(1.2)** The **input files** for **LAMMPS** to run *pre-equilibration*, *equilibration* and first **PLUMED** experiments to detect the water molecules inside the membrane.
 
 # (2) Initial configuration: solid_coordinates_Water.cpp
-**(2.1)** Adjust the parameters of the membrane and quantity of water molecules:
-- Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=3.54575 Angstroms. So the membrane real measure is **60X60X50** A^3.
-- radius=**10** Angstroms (not in rm units). This is the pore radius
-- molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=1) but this introduces unstable configurations and the dynamics could explode. In general for this box 2000 molecules gives a good compromise between high density and stability. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
+**(2.1)** Adjust the size parameters of the membrane and quantity of water molecules:
+- **Membrane size**: Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=**3.54575** Angstroms. This are in fact the number of membrane atoms in each dimension. So the membrane real measure is **60X60X50** Angstroms^3.
+- **Membrane pore**: radius=**10.0** Angstroms. This is the pore radius. It is chosen to have **20.0** Angstroms of diameter centered in a surface of **60X60** Angstroms^2.
+- **Water molecules**: molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=**1.0**) but this introduces unstable configurations and the dynamics could explode. In general for this box **2000** molecules gives a good compromise between high density and stability for the initial steps of the dynamics. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
 
-**(2.2)** The compilation should use the c++ 11 standard:
+**(2.2)** **Compilation**: The compilation should use the c++ 11 standard:
 
 - g++ -std=c++11 solid_coordinates_Water.cpp
 
 # (3) Stabilize simulation with LAMMPS
-**(3.1)** Use the script **run.sh** to run the LAMMPS simulations it has the paths to LAMMPS. Be sure that it is pointing to the right input file.
+**(3.1)** Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
 
-**(3.2)** LAMMPS minimization can not be used with the rigid bonds we want to use otherwise use LAMMPS relaxation previously to perform the dynamics.
+**(3.2)** **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
 
-**(3.3)** Perform an NVT simulation with a small integration step to pre-equilibrate the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
+**(3.3)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
 
 - in.solid                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
 - in.solid_restart            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
