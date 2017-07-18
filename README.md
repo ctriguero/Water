@@ -36,7 +36,7 @@
 
 **(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system.
 
-- in.solid_restart_barostat   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
+- Input file: **in.solid_restart_barostat**   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
 # (5) Detect water molecules inside the pore with PLUMED.
 **(5.1)** We first use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
