@@ -8,8 +8,8 @@
 
 **(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
 
-# (2) Initial configuration: solid_coordinates_Water.cpp
-**(2.1)** Adjust the size parameters of the membrane and quantity of water molecules:
+# (2) Initial configuration: Solid_Coordinates_Water.cpp
+**(2.1)** Adjust the size parameters of the membrane and quantity of water molecules in the program:
 - **Membrane size**: Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=**3.54575** Angstroms. This are in fact the number of membrane atoms in each dimension. So the membrane real measure is **60X60X50** Angstroms^3.
 - **Membrane pore**: radius=**10.0** Angstroms. This is the pore radius. It is chosen to have **20.0** Angstroms of diameter centered in a surface of **60X60** Angstroms^2.
 - **Water molecules**: molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=**1.0**) but this introduces unstable configurations and the dynamics could explode. In general for this box **2000** molecules gives a good compromise between high density and stability for the initial steps of the dynamics. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
