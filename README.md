@@ -41,6 +41,8 @@
 # (4) Detect water molecules inside the pore with PLUMED.
 **(4.1)** We first use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
 
+- **Bandwidth**: Determined by the diameter of the pore. We need to fill the pore space. The diameter of the pore is **20** Angstroms. The bandwith in the dimensions *x* and *y* must be at least **10** Angstroms (In **PLUMED** **1** nanometer). In the *z* dimension we just need to cover the interatomic distance between membrane atoms wichh is rm. The bandwith in the *z* dimension should be around rm/2. This is **1.77** Angstroms (In **PLUMED** **0.177** nanometers).
+
 **(4.2)** One can accomplish this using the following provided **PLUMED** and **LAMMPS** input files:
 
 - Input file: **in.solid_restart_plumed**   ----> NPT (dt=**2.0** fs we can use this larger step now provided the simulation is in equilibrium, **X** steps)
