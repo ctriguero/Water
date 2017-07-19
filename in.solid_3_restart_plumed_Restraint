@@ -1,0 +1,107 @@
+# TIP4P Water create molecules
+
+# variables available on command line
+
+variable	molecules equal 1600	# Number of molecules
+variable	dt equal 1.0		# fempto seconds, fs
+variable	temp equal 300		# Kelvin
+variable	kb equal 0.0		# kcal/mol/Angs^2
+variable	ka equal 0.0		# kcal/mol/Angs^2
+variable	r0 equal 0.9572		# Angs
+variable	theta0 equal 104.52	# degrees
+variable	eps_oo equal 0.1852	# kcal/mol
+variable	eps_hh equal 0.0	# kcal/mol
+variable	eps_oh equal 0.0	# kcal/mol
+variable	sig_oo equal 3.1589	# Angs
+variable	sig_hh equal 0.0	# Angs
+variable	sig_oh equal 0.0	# Angs
+variable	qo equal -1.1128	# Proton charge
+variable	qh equal 0.5564		# Proton charge
+variable	om equal 0.1546		# O-M distance
+variable	cutoff equal 8.5	# Angs
+variable	Lxp2 equal 150.00	# Angs
+variable	Lyp2 equal 150.00	# Angs
+variable	Lzp2 equal 80.00	# Angs
+variable	mo equal 15.999		# uma
+variable	mh equal 1.008		# uma
+
+# global model settings
+
+units           real
+atom_style      full
+boundary        p p p
+
+# Solid
+##read_data	solid.data
+read_restart	restart_FINAL_lj.1100000
+
+# TIP4P                        otype htype btype atype
+pair_style	lj/cut/tip4p/long 2 3 1 1 ${om} ${cutoff}
+kspace_style	pppm/tip4p 1.0e-5
+bond_style	harmonic
+angle_style	harmonic
+
+# List management
+neighbor	5.0 bin
+#                            MaxNumNeighOneAt
+neigh_modify	delay 0 every 1 one 20000 page 200000
+    
+
+# masses
+group	s type 1
+group	o type 2
+group	h type 3
+
+mass 1 ${mo}
+mass 2 ${mh}
+
+# TIP4P2005-rigid
+
+pair_coeff	2 2 ${eps_oo} ${sig_oo}
+pair_coeff	3 3 ${eps_hh} ${sig_hh}
+pair_coeff	2 3 ${eps_oh} ${sig_oh}
+
+pair_coeff	1 1 ${eps_oo} ${sig_oo}
+pair_coeff	1 2 ${eps_oo} ${sig_oo}
+
+bond_coeff	1 ${kb} ${r0}	# Bond type, Elastic constant, Equilibrium distance
+angle_coeff	1 ${ka} ${theta0}
+
+
+# Dynamics rigid constraints with thermostat 
+fix rigidbonds all shake 0.0001 20 10 b 1 a 1
+velocity       	all create ${temp} 54654 mom yes rot yes
+timestep        ${dt}
+
+
+# Fixing solid group
+velocity s set 0.0 0.0 0.0
+fix zeroforce s setforce 0.0 0.0 0.0
+
+
+#fix barothermostat all npt temp ${temp} ${temp} 10.00 z 1.0 1.0 100.0
+fix thermostat all nvt temp ${temp} ${temp} 10.00
+
+fix cv all plumed plumedfile plumed_Restraint.dat outfile PLUMED.log
+
+# output
+dump		1 all custom 1000 traj_4.lammpstrj id mol element x y z xu yu zu
+dump_modify	1 element C O H
+
+# Saves a restart file every N steps. * replaces the number of steps in the file
+#          N
+restart 100 restart_lj.*
+
+# run
+run		1000000
+
+write_restart restart_FINAL_lj.*
+
+unfix		barothermostat
+unfix		cv
+
+
+
+
+
+
