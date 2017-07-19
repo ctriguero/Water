@@ -8,6 +8,11 @@
 
 **(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
 
+**(1.3)** **Analysis**:
+- Program to extract data from log file: **extract_log.cpp**.
+- Program to draw the configurations: **Draw_Frames.cpp**.
+- Program to generate a rotating gif of a frame: **rot.ini** **rot.sh**.
+
 # (2) Initial configuration: Solid_Coordinates_Water.cpp
 **(2.1)** Adjust the size parameters of the membrane and quantity of water molecules in the program:
 - **Membrane size**: Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=**3.54575** Angstroms. This are in fact the number of membrane atoms in each dimension. So the membrane real measure is **60X60X50** Angstroms^3.
