@@ -54,11 +54,11 @@
 
 - This **LAMMPS** input file will make use of the *fix plumed* which is defined in the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
 
-# (5) Control the water numbe inside the pore with PLUMED: 
+# (5) Control the number of water molecules inside the pore: 
 
-- **Note 1**: **PLUMED** will introduce forces in the system. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces that will break the solid. In this case: the *velocity set* and the *fix forces* applyed to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
+- **Note 1**: To fix the number of molecules inside the pore we use the **PLUMED** utility **MOVING_CONSTRAINT** which is a kind of umbrella sampling. We also use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html). We start with the equilibrium occupation value of the pore wich is aroun **80** water molecules. Then we start adding a parabolic potential with zero curvature at the beginning increasing to positive values and centered in the target value. In this way we steer the dynamics towards our target occupation of the pore.
 
-- **Note 2**: To fix the number of molecules inside the pore we use the **PLUMED** utility **MOVING_CONSTRAINT** which is a kind of umbrella sampling. We also use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html). We start with the equilibrium occupation value of the pore wich is aroun **80** water molecules. Then we start adding a parabolic potential with zero curvature at the beginning increasing to positive values and centered in the target value. In this way we steer the dynamics towards our target occupation of the pore.
+- **Note 2**: In order to steer the dynamics towards our occupation target, **PLUMED** will introduce forces in the system. All atoms will be affected. We do not want this forces to affect the solid membrane as it must preserve the shape. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces applied to the solid that will break the solid. In this case: the *velocity set* and the *fix forces* applied to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
 
 **(5.1)** **Experiment 1**: Low density in the pore.
 
