@@ -39,7 +39,7 @@
 - Input file: **in.solid**                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
 - Input file: **in.solid_restart**            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
 
-**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](http://aip.scitation.org/doi/10.1063/1.2121687) water is: **0.9979** gr/cm^3, which approximately translates into the number density of: **0.033** water molecules/Angstrom^3. 
+**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](http://aip.scitation.org/doi/10.1063/1.2121687) water is: **0.9979** gr/cm^3, which approximately translates into the number density of: **0.033** water molecules/Angstrom^3. Using the program  **extract_log.cpp** we can determine if the right number density has been reached: \rho=**2000** h2o molecules/(Lx A Ly A (Lz A-50 A)+\pi 10^2 A^2*50 A).
 
 - Input file: **in.solid_restart_barostat**   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
