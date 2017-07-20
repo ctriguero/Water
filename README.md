@@ -30,16 +30,16 @@
 
 # (3) Stabilize/Equilibrate the configuration with LAMMPS
 
-**Note 1**: **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
+-**Note 1**: **LAMMPS** minimization can not be used with the rigid bonds we want to use. If we relax the rigid bond condition then we can use **LAMMPS** relaxation previously to perform the dynamics.
 
-**Note 2**: Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
+-**Note 2**: Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
 
 **(3.1)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
 
 - Input file: **in.solid**                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
 - Input file: **in.solid_restart**            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
 
-**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](ftp://ftp.ill.fr/pub/cs/workshops/mdanse/data/abascal05_tip4p2005.pdf) water is: **0.9979** gr/cm^3, which approximately translates into the number density: **0.033** A^{-3}. 
+**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](http://aip.scitation.org/doi/10.1063/1.2121687) water is: **0.9979** gr/cm^3, which approximately translates into the number density: **0.033** A^{-3}. 
 
 - Input file: **in.solid_restart_barostat**   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
@@ -56,7 +56,10 @@
 
 # (5) Control the water numbe inside the pore with PLUMED: 
 
-**Note 1**: **PLUMED** will introduce forces in the system. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces that will break the solid. In this case: the *velocity set* and the *fix forces* applyed to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
+-**Note 1**: **PLUMED** will introduce forces in the system. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces that will break the solid. In this case: the *velocity set* and the *fix forces* applyed to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
 
-**Note 2**: To fix the number of molecules inside the pore we use the **PLUMED** utility **MOVING_CONSTRAINT** which is a kind of umbrella sampling. We also use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html). We start with the equilibrium occupation value of the pore wich is aroun **80** water molecules. Then we start adding a parabolic potential with zero curvature at the beginning increasing to positive values and centered in the target value. In this way we steer the dynamics towards our target occupation of the pore.
+-**Note 2**: To fix the number of molecules inside the pore we use the **PLUMED** utility **MOVING_CONSTRAINT** which is a kind of umbrella sampling. We also use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html). We start with the equilibrium occupation value of the pore wich is aroun **80** water molecules. Then we start adding a parabolic potential with zero curvature at the beginning increasing to positive values and centered in the target value. In this way we steer the dynamics towards our target occupation of the pore.
+
+**(5.1)** **Experiment 1**: Low density in the pore.
+**(5.1)** **Experiment 2**: High density in the pore.
 
