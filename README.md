@@ -1,17 +1,25 @@
 # Water:
 
 # (1) Package content:
-**(1.0)** The program **Water_data.cpp**.
+**(1.1)** The program **Water_data.cpp**.
 - This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a set of TIP4P/2005 water model in a box. The purpose of this program is just get some experience in water simulation that then we will use as enrironment for the membrane.
 
-**(1.1)** The program **solid_coordinates_Water.cpp**. 
+**(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, and the *equilibration* of liquid water.
+- Input file: **in.water_NVT1_1**  
+- Input file: **in.water_NPT1_2**
+- Input file: **in.water_NVT2_3**
+- Input file: **in.water_NPT2_4**
+- Input file: **in.water_NVT3_5**
+- Input file: **in.water_NPT3_6**
+
+**(1.3)** The program **solid_coordinates_Water.cpp**. 
 - This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a:
 - A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones interaction potential for the *Oxygen-Oxygen interaction* given by the parameters of the **TIP4P/2005** water model.
 - A random distribution of **TIP4P/2005** water molecules. With all the bonds and angles defined for **LAMMPS**.
 
-**(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
+**(1.4)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
 
-**(1.3)** **Analysis**:
+**(1.5)** **Analysis**:
 - Program to extract data from log file: **extract_log.cpp**.
 - Program to draw the configurations: **Draw_Frames.cpp**.
 - Program to generate a rotating gif of a frame: **rot.ini** **rot.sh**.
