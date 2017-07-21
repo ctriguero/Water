@@ -216,6 +216,7 @@ int main( int argc, const char* argv[] )
 
 	int AtomsBulk=Atoms ;
 	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << AtomsBulk << RESET << YELLOW << " bulk solid atoms" << std::endl ;
+	std::cout  << BLUE << "       * Their index number goes from: " << BOLDBLUE << "1 to " << AtomsBulk << RESET << BLUE << " bulk solid atoms" << RESET << std::endl ;
 
 	// Surface atoms layer of 2 atoms side 1
 	for ( int k = 0; k < 2; ++k )
@@ -401,7 +402,7 @@ int main( int argc, const char* argv[] )
 
 
 
-	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << xw.size()-SolidAtoms << RESET << YELLOW << " water atoms" << std::endl ;
+	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << (xw.size()-SolidAtoms)/3.0 << RESET << YELLOW << " water molecules" << std::endl ;
 	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << xw.size() << RESET << YELLOW << " atoms" << std::endl ;
 
 
