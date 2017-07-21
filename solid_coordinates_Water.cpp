@@ -75,9 +75,9 @@ int main( int argc, const char* argv[] )
 	unsigned int Lz=14 ;		// Number of atoms 50A/rm
 	const double rm=3.54575 ;	// Minimum distance in Angstroms
 	const double radius=10.0 ;	// Angstroms
-	int molecules= 2000 ; //1500 ;
-	#define QO -0.8476
-	#define QH  0.4238
+	int molecules= 2000 ; 
+	#define QO -1.1128
+	#define QH  0.5564
 	//----------------------------------------------------------------------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------------------------------------		
 	
@@ -179,14 +179,19 @@ int main( int argc, const char* argv[] )
 	CONFIG << std::endl ;
 
 	
-	 
+	
+
+ 
 	Atoms=0 ;
-	for ( int i = 0; i < Lx; ++i )
+
+	// Membrane bulk atoms
+	for ( int k = 2; k < Lz-2; ++k )
 	{
-		for ( int j = 0; j < Ly; ++j )
+		for ( int i = 0; i < Lx; ++i )
 		{
-			for ( int k = 0; k < Lz; ++k )
+			for ( int j = 0; j < Ly; ++j )
 			{
+			
 				double x=rm*(i-Lx/2.0)+rm/2.0 ;
 				double y=rm*(j-Ly/2.0)+rm/2.0 ;
 				double z=rm*(k-Lz/2.0)+rm/2.0 ;
@@ -203,11 +208,78 @@ int main( int argc, const char* argv[] )
 					//SOLID << Atoms << "\t" << "1" << "\t" << "\t" << x << "\t" << y << "\t" << z << std::endl ;
 					SOLID << Atoms << "\t" << Atoms << "\t" << "1" << "\t" << "0.0" << "\t" << x  << "\t" << y << "\t" << z << endl ;
 
-					CONFIG << "Os" << "\t" << x << "\t" << y << "\t" << z << std::endl ; 
+					CONFIG << "C" << "\t" << x << "\t" << y << "\t" << z << std::endl ; 
 				}
 			}
 		}
 	}
+
+	int AtomsBulk=Atoms ;
+	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << AtomsBulk << RESET << YELLOW << " bulk solid atoms" << std::endl ;
+
+	// Surface atoms layer of 2 atoms side 1
+	for ( int k = 0; k < 2; ++k )
+	{
+		for ( int i = 0; i < Lx; ++i )
+		{
+			for ( int j = 0; j < Ly; ++j )
+			{
+			
+				double x=rm*(i-Lx/2.0)+rm/2.0 ;
+				double y=rm*(j-Ly/2.0)+rm/2.0 ;
+				double z=rm*(k-Lz/2.0)+rm/2.0 ;
+
+				double dxy=sqrt(x*x+y*y) ;
+				if ( dxy > radius )
+				{
+					xw.push_back (x) ;
+					yw.push_back (y) ;
+					zw.push_back (z) ;
+
+					Atoms++ ;
+					// Atom number, molecule number, atom type, charge, coordinates
+					//SOLID << Atoms << "\t" << "1" << "\t" << "\t" << x << "\t" << y << "\t" << z << std::endl ;
+					SOLID << Atoms << "\t" << Atoms << "\t" << "1" << "\t" << "0.0" << "\t" << x  << "\t" << y << "\t" << z << endl ;
+
+					CONFIG << "N" << "\t" << x << "\t" << y << "\t" << z << std::endl ; 
+				}
+			}
+		}
+	}
+
+	
+
+	// Surface atoms layer of 2 atoms side 2
+	for ( int k = Lz-2; k < Lz; ++k )
+	{
+		for ( int i = 0; i < Lx; ++i )
+		{
+			for ( int j = 0; j < Ly; ++j )
+			{
+			
+				double x=rm*(i-Lx/2.0)+rm/2.0 ;
+				double y=rm*(j-Ly/2.0)+rm/2.0 ;
+				double z=rm*(k-Lz/2.0)+rm/2.0 ;
+
+				double dxy=sqrt(x*x+y*y) ;
+				if ( dxy > radius )
+				{
+					xw.push_back (x) ;
+					yw.push_back (y) ;
+					zw.push_back (z) ;
+
+					Atoms++ ;
+					// Atom number, molecule number, atom type, charge, coordinates
+					//SOLID << Atoms << "\t" << "1" << "\t" << "\t" << x << "\t" << y << "\t" << z << std::endl ;
+					SOLID << Atoms << "\t" << Atoms << "\t" << "1" << "\t" << "0.0" << "\t" << x  << "\t" << y << "\t" << z << endl ;
+
+					CONFIG << "N" << "\t" << x << "\t" << y << "\t" << z << std::endl ; 
+				}
+			}
+		}
+	}
+
+	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << Atoms-AtomsBulk << RESET << YELLOW << " surface solid atoms" << std::endl ;
 
 	int SolidAtoms=Atoms ;
 	std::cout  << YELLOW << "    -> Inserted: " << BOLDYELLOW << xw.size() << RESET << YELLOW << " solid atoms" << std::endl ;
@@ -283,15 +355,15 @@ int main( int argc, const char* argv[] )
 	mol++ ;
 
 	// Atom number, molecule number, atom type, charge, coordinates
-	SOLID << Atoms << "\t" << mol+1 << "\t" << "2" << "\t" << QO << "\t" << "\t" << owx << "\t" << owy << "\t" << owz << std::endl ;
+	SOLID << Atoms << "\t" << SolidAtoms+mol << "\t" << "2" << "\t" << QO << "\t" << "\t" << owx << "\t" << owy << "\t" << owz << std::endl ;
 	Atoms++ ;
-	SOLID << Atoms << "\t" << mol+1 << "\t" << "3" << "\t" << QH << "\t" << "\t" << hw2x << "\t" << hw2y << "\t" << hw2z << std::endl ;
+	SOLID << Atoms << "\t" << SolidAtoms+mol << "\t" << "3" << "\t" << QH << "\t" << "\t" << hw2x << "\t" << hw2y << "\t" << hw2z << std::endl ;
 	Atoms++ ;
-	SOLID << Atoms << "\t" << mol+1 << "\t" << "3" << "\t" << QH << "\t" << "\t" << hw3x << "\t" << hw3y << "\t" << hw2z << std::endl ;
+	SOLID << Atoms << "\t" << SolidAtoms+mol << "\t" << "3" << "\t" << QH << "\t" << "\t" << hw3x << "\t" << hw3y << "\t" << hw2z << std::endl ;
 
-	CONFIG << "Ow" << "\t" << owx << "\t" << owy << "\t" << owz << std::endl ;
-	CONFIG << "Hw" << "\t" << hw2x << "\t" << hw2y << "\t" << hw2z << std::endl ;
-	CONFIG << "Hw" << "\t" << hw3x << "\t" << hw3y << "\t" << hw3z << std::endl ;
+	CONFIG << "O" << "\t" << owx << "\t" << owy << "\t" << owz << std::endl ;
+	CONFIG << "H" << "\t" << hw2x << "\t" << hw2y << "\t" << hw2z << std::endl ;
+	CONFIG << "H" << "\t" << hw3x << "\t" << hw3y << "\t" << hw3z << std::endl ;
 
 	goto newmol ;
 
