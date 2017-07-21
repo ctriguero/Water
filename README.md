@@ -3,7 +3,7 @@
 # (1) Package content:
 **(1.1)** The program **solid_coordinates_Water.cpp**. 
 - This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a:
-- A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones potential.
+- A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones interaction potential for the Oxigen-Oxigen interaction given by the parameters of the **TIP4P/2005** water model.
 - A random distribution of **TIP4P/2005** water molecules. With all the bonds and angles defined for **LAMMPS**.
 
 **(1.2)** The **input files** for **LAMMPS** to run: *pre-equilibration*, *equilibration*, and the files to run **PLUMED** experiments to detect the water molecules inside the membrane, and biased dynamics.
