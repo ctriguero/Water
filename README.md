@@ -1,6 +1,9 @@
 # Water:
 
 # (1) Package content:
+**(1.0)** The program **Water_data.cpp**.
+- This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a set of TIP4P/2005 water model in a box. The purpose of this program is just get some experience in water simulation that then we will use as enrironment for the membrane.
+
 **(1.1)** The program **solid_coordinates_Water.cpp**. 
 - This program generates the **initial configuration** file (data input file) for **LAMMPS** which consist of a:
 - A **solid membrane** with a **hole/pore**. The atoms are placed in the minimum energy distance of the Lennard-Jones interaction potential for the *Oxygen-Oxygen interaction* given by the parameters of the **TIP4P/2005** water model.
