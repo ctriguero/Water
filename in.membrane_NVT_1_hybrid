@@ -1,0 +1,112 @@
+# TIP4P Water create molecules
+
+# variables available on command line
+
+variable	dt equal 0.001		# fempto seconds, fs
+variable	temp equal 300		# Kelvin
+variable	kb equal 0.0		# kcal/mol/Angs^2
+variable	ka equal 0.0		# kcal/mol/Angs^2
+variable	r0 equal 0.9572		# Angs
+variable	theta0 equal 104.52	# degrees
+variable	eps_oo equal 0.1852	# kcal/mol
+variable	eps_hh equal 0.0	# kcal/mol
+variable	eps_oh equal 0.0	# kcal/mol
+variable	sig_oo equal 3.1589	# Angs
+variable	sig_hh equal 0.0	# Angs
+variable	sig_oh equal 0.0	# Angs
+variable	qo equal -1.1128	# Proton charge
+variable	qh equal 0.5564		# Proton charge
+variable	om equal 0.1546		# O-M distance
+variable	cutoff equal 8.5	# Angs
+variable	mo equal 15.999		# uma
+variable	mh equal 1.008		# uma
+
+# global model settings
+
+units           real
+atom_style      full
+boundary        p p p
+
+# Interactions definitions
+# TIP4P                        otype htype btype atype                                
+pair_style	hybrid lj/cut/tip4p/long 2 3 1 1 ${om} ${cutoff} lj/cut ${cutoff}
+
+kspace_style    pppm/tip4p 1.0e-5
+bond_style      harmonic
+angle_style     harmonic
+
+# Solid-Water
+read_data       membrane.data
+
+#####pair_style	lj/cut ${cutoff}
+
+# List management
+#
+neighbor	5.0 bin
+#                            MaxNumNeighOneAt
+
+neigh_modify	delay 0 every 1 one 20000 page 200000
+    
+# masses
+
+group   s type 1
+group	o type 2
+group	h type 3
+group 	h2o type 2 3
+
+mass 1 ${mo}
+mass 2 ${mo}
+mass 3 ${mh}
+
+# Solid-Solid  Solid-Water interactions
+pair_coeff	1 1 lj/cut ${eps_oo} ${sig_oo}
+pair_coeff	1 2 lj/cut ${eps_oo} ${sig_oo}
+pair_coeff      1 3 lj/cut ${eps_oo} ${sig_oo}
+
+# Water-Water
+pair_coeff      2 2 lj/cut/tip4p/long ${eps_oo} ${sig_oo}
+pair_coeff      2 3 lj/cut/tip4p/long ${eps_oh} ${sig_oh}
+pair_coeff      3 3 lj/cut/tip4p/long ${eps_hh} ${sig_hh}
+
+bond_coeff	1 ${kb} ${r0}	# Bond type, Elastic constant, Equilibrium distance
+angle_coeff	1 ${ka} ${theta0}
+
+
+# Dynamics rigid constraints with thermostat 
+fix rigidbonds h2o shake 0.0001 20 10 b 1 a 1
+velocity       	h2o create ${temp} 54654 mom yes rot yes
+timestep        ${dt}
+
+
+# Fixing solid group
+velocity s set 0.0 0.0 0.0
+fix zeroforce s setforce 0.0 0.0 0.0
+
+
+fix barothermostat all nvt temp ${temp} ${temp} 100.00
+####fix barothermostat all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0
+
+
+# output
+log log.lammps_NVT_1
+thermo_style custom step temp press ke pe etotal lx ly lz vol
+thermo 100
+dump		1 all custom 10000 traj_1.lammpstrj id mol element x y z xu yu zu
+dump_modify	1 element C O H
+
+# Saves a restart file every N steps. * replaces the number of steps in the file
+#          N
+restart 50000 restart_lj.*
+
+# run
+run		100000
+
+write_restart restart_FINAL_lj.*
+
+unfix		barothermostat
+
+
+
+
+
+
