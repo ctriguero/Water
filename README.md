@@ -28,7 +28,7 @@
 **(2.1)** Adjust the size parameters of the membrane and quantity of water molecules in the program:
 - **Membrane size**: Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=**3.54575** Angstroms. This are in fact the number of membrane atoms in each dimension. So the membrane real measure is **60X60X50** Angstroms^3.
 - **Membrane pore**: radius=**10.0** Angstroms. This is the pore radius. It is chosen to have **20.0** Angstroms of diameter centered in a surface of **60X60** Angstroms^2.
-- **Water molecules**: molecules=**2000**. This is the number of water molecules to insert. For liquid water we want high density (rho=**1.0**) but this introduces unstable configurations and the dynamics could explode. In general for this box **2000** molecules gives a good compromise between high density and stability for the initial steps of the dynamics. Once the simulation is equilibrated, we can perform an isobaric simulation in order to compress the water to the right density.
+- **Water molecules**: molecules=**4500**. This is the number of water molecules to insert. For liquid water we want high density (rho=**1.0**) but this introduces unstable configurations and the dynamics could explode. In general for this box **4500** molecules gives a good compromise between high density and stability for the initial steps of the dynamics. Once the simulation is equilibrated, we can increase the time step.
 
 **(2.2)** **Compilation**: The compilation should use the c++ 11 standard:
 
@@ -45,12 +45,13 @@
 
 - **Note 2**: Use the script **run.sh** to run the LAMMPS simulations it has the paths to **LAMMPS**. Be sure that it is pointing to the right input file.
 
-**(3.1)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
+**(3.1)** **Equilibration protocol**.
+**(3.2)** **Pre-equilibration**: Perform an NVT simulation with a **small integration step** to *pre-equilibrate* the system. You can use the following LAMMPS input files to achieve this. We use first a very small step and then a larger one:
 
 - Input file: **in.solid**                    ----> NVT with small integration step (dt=**0.001** fs, **50000** steps)
 - Input file: **in.solid_restart**            ----> NVT with increased integration step (dt=**0.1** fs, **50000** steps)
 
-**(3.2)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](http://aip.scitation.org/doi/10.1063/1.2121687) water is: **0.9979** gr/cm^3, which approximately translates into the number density of: **0.033** water molecules/Angstrom^3. Using the program  **extract_log.cpp** we can determine if the right number density has been reached: \rho=**2000** h2o molecules/(Lx A Ly A (Lz A-50 A)+\pi 10^2 A^2*50 A).
+**(3.3)** **Equilibration**: Once the water is *pre-equilibrated* (not going to crash but not really equilibrated) we can use an anisotropic barostat to converge into the right water density and achieve a real equilibration of the system. The expected liquid water [density for TIP4P/2005](http://aip.scitation.org/doi/10.1063/1.2121687) water is: **0.9979** gr/cm^3, which approximately translates into the number density of: **0.033** water molecules/Angstrom^3. Using the program  **extract_log.cpp** we can determine if the right number density has been reached: \rho=**2000** h2o molecules/(Lx A Ly A (Lz A-50 A)+\pi 10^2 A^2*50 A).
 
 - Input file: **in.solid_restart_barostat**   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
