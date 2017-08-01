@@ -24,7 +24,7 @@
 - Program to draw the configurations: **Draw_Frames.cpp**.
 - Program to generate a rotating gif of a frame: **rot.ini** **rot.sh**.
 
-# (2) Initial configuration: Solid_Coordinates_Water.cpp
+# (2) Initial configuration: solid_coordinates_Water_layer_170724.cpp
 **(2.1)** Adjust the size parameters of the membrane and quantity of water molecules in the program:
 - **Membrane size**: Lx=**18**, Ly=**18**, Lz=**14** are integers or scaled to the distance for the minimum energy in the Lennard-Jones potential. In our case this is: rm=**3.54575** Angstroms. This are in fact the number of membrane atoms in each dimension. So the membrane real measure is **60X60X50** Angstroms^3.
 - **Membrane pore**: radius=**10.0** Angstroms. This is the pore radius. It is chosen to have **20.0** Angstroms of diameter centered in a surface of **60X60** Angstroms^2.
@@ -54,24 +54,34 @@
 
 - Input file: **in.solid_restart_barostat**   ----> NPT to converge to the right density (dt=**0.1** fs, **1000000** steps)
 
-# (4) Detect water molecules inside the pore with PLUMED.
-**(4.1)** We first use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
+# (4) Add more water to the initial configuration
+**(4.1)** It is very likely that after the equilibration the water is condensed in to a much samaller region than the box. We might be interested in adding more water molecules to the configuration. In this case we should isolate the last frame from the equilibrations made in section **(3)**.
+**(4.2)** Once we have the last frame e.g. *lastframe.lammpstrj* we use the program **Add_more_water.cpp** to introduce more molecules. With this we create a new **LAMMPS** data file.
+**(4.3)** **Compilation**: The compilation should use the c++ 11 standard:
+
+- g++ -std=c++11 solid_coordinates_Water.cpp
+
+**(4.4)** After that we need again to equilibrate the system. We can use for that the same protocol used the for the first data file, with the new data file. In our specific example we added **2500** extra water molecules. Added to the **4500** that we already had makes **7000** water molecules.
+
+
+# (5) Detect water molecules inside the pore with PLUMED.
+**(5.1)** We first use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
 
 - **Bandwidth**: Determined by the diameter of the pore. We need to fill the pore space. The diameter of the pore is **20** Angstroms. The bandwith in the dimensions *x* and *y* must be at least **10** Angstroms (In **PLUMED** **1** nanometer). In the *z* dimension we just need to cover the interatomic distance between membrane atoms wichh is rm. The bandwith in the *z* dimension should be around rm/2. This is **1.77** Angstroms (In **PLUMED** **0.177** nanometers).
 
-**(4.2)** One can accomplish this using the following provided **PLUMED** and **LAMMPS** input files:
+**(5.2)** One can accomplish this using the following provided **PLUMED** and **LAMMPS** input files:
 
 - Input file: **in.solid_restart_plumed**   ----> NPT (dt=**2.0** fs we can use this larger step now provided the simulation is in equilibrium, **X** steps)
 
 - This **LAMMPS** input file will make use of the *fix plumed* which is defined in the **plumed.dat** file where the instructions for detecting molecules inside the pore are specified.
 
-# (5) Control the number of water molecules inside the pore: 
+# (6) Control the number of water molecules inside the pore: 
 
 - **Note 1**: To fix the number of molecules inside the pore we use the **PLUMED** utility **MOVING_CONSTRAINT** which is a kind of umbrella sampling. We also use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html). We start with the equilibrium occupation value of the pore wich is aroun **80** water molecules. Then we start adding a parabolic potential with zero curvature at the beginning increasing to positive values and centered in the target value. In this way we steer the dynamics towards our target occupation of the pore.
 
 - **Note 2**: In order to steer the dynamics towards our occupation target, **PLUMED** will introduce forces in the system. All atoms will be affected. We do not want this forces to affect the solid membrane as it must preserve the shape. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces applied to the solid that will break the solid. In this case: the *velocity set* and the *fix forces* applied to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
 
-**(5.1)** **Experiment 1**: Low density in the pore.
+**(6.1)** **Experiment 1**: Low density in the pore.
 
-**(5.1)** **Experiment 2**: High density in the pore.
+**(6.1)** **Experiment 2**: High density in the pore.
 
