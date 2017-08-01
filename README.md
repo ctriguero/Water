@@ -61,8 +61,15 @@
 
 - g++ -std=c++11 solid_coordinates_Water.cpp
 
-**(4.4)** After that we need again to equilibrate the system. We can use for that the same protocol used the for the first data file, with the new data file. In our specific example we added **2500** extra water molecules. Added to the **4500** that we already had makes **7000** water molecules.
+**(4.4)** **Run**: The program should run in around one minute when **2500** water molecules are added to the pre-existing **4500**. It will generate two outputs:
 
+- **solid_add.data**: This is the new initial configuration data file for **LAMMPS**.
+- **config.xyz**: This is an xyz file to visualize the new initial configuration, for example with [vmd](http://www.ks.uiuc.edu/Research/vmd/).
+
+**(4.5)** **Equilibration**: The new added water molecules are not in equilibrium. We need to equilibrate the system. We can use for that the same protocol used for the first data file in section **(3.1-2)**, with the new data file. In our specific example we added **2500** extra water molecules. Added to the **4500** that we already had makes **7000** water molecules. For the equilibration we use the following files:
+
+- **solid_add.data**: This is the new initial configuration data file for **LAMMPS**.
+- **in.membrane_NVT_hybrid_1**: This is the same **LAMMPS** input file used for the equilibration in section **(3.1-2)**.
 
 # (5) Detect water molecules inside the pore with PLUMED.
 **(5.1)** We first use the **PLUMED** utility [INENVELOPE](http://plumed.github.io/doc-master/user-doc/html/_i_n_e_n_v_e_l_o_p_e.html) to detect molecules inside the pore. This run is not going to constraint or bias the simulation by any mean. It will just monitor the number of water molecules inside the pore.
