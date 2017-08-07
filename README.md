@@ -89,7 +89,14 @@
 
 - **Note 2**: In order to steer the dynamics towards our occupation target, **PLUMED** will introduce forces in the system. All atoms will be affected. We do not want this forces to affect the solid membrane as it must preserve the shape. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces applied to the solid that will break the solid. In this case: the *velocity set* and the *fix forces* applied to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
 
-**(6.1)** **Experiment 1**: Low density in the pore.
+- **Note 3**: The relaxed configuration does not contain any water molecule insede the pore. The pore is probably hydrophobic (we will check this later). The interactions among water decrease more the energy than the interactions between the water and membrane because there is not electrostatic interaction in this last one. For this reason the initial state is an empty pore.
 
-**(6.1)** **Experiment 2**: High density in the pore.
+
+**(6.1)** **Experiment 1**: Fill the pore with water molecules. We just need to steer the Oxygen atoms of the molecules as the hydrogens are bounded and will follow the oxygen.
+
+**(6.1)** **Experiment 2**: Free evolution to se how it empties which shows hydrophobicity.
+
+# (7) Clusters of water molecules inside the pore:
+
+- **Note 1**: We will use two different clustering techniques. *Distance* and *Topological* clustering.
 
