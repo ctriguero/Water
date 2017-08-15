@@ -57,6 +57,8 @@
 
 # (4) Add more water to the initial configuration
 **(4.1)** It is very likely that after the equilibration the water is condensed in to a much samaller region than the box. We might be interested in adding more water molecules to the configuration. In this case we should isolate the last frame from the equilibrations made in section **(3)**.
+- For high densities the program could add some atom inside the membrane. As the pore is hydrophobic we can add a restriction in *z* to avoid add atoms inside the membrane and have a cleaner simulation.
+
 **(4.2)** Once we have the last frame e.g. *lastframe.lammpstrj* we use the program **Add_more_water.cpp** to introduce more molecules. With this we create a new **LAMMPS** data file.
 **(4.3)** **Compilation**: The compilation should use the c++ 11 standard:
 
@@ -89,14 +91,20 @@
 
 - **Note 2**: In order to steer the dynamics towards our occupation target, **PLUMED** will introduce forces in the system. All atoms will be affected. We do not want this forces to affect the solid membrane as it must preserve the shape. If the *fix plumed* command is introduced after the set velocities to zero and fix forces to zero for the solid, **PLUMED** will introduce additional forces applied to the solid that will break the solid. In this case: the *velocity set* and the *fix forces* applied to the solid **don't commute** with *fix plumed* i.e. the order will completely alter the result of the simulation.
 
-- **Note 3**: The relaxed configuration does not contain any water molecule insede the pore. The pore is probably hydrophobic (we will check this later). The interactions among water decrease more the energy than the interactions between the water and membrane because there is not electrostatic interaction in this last one. For this reason the initial state is an empty pore.
+- **Note 3**: The relaxed configuration does not contain any water molecule inside the pore. The pore is probably hydrophobic (we will check this later). The interactions among water decrease more the energy than the interactions between the water and membrane because there is not electrostatic interaction in this last one. For this reason the initial state is an empty pore.
 
 
-**(6.1)** **Experiment 1**: Fill the pore with water molecules. We just need to steer the Oxygen atoms of the molecules as the hydrogens are bounded and will follow the oxygen.
+**(6.1)** **Experiment 1**: Fill the pore with water molecules. We just need to steer the Oxygen atoms of the molecules as the hydrogens are bounded and will follow the oxygen. Different fillings have been tried.
 
-**(6.1)** **Experiment 2**: Free evolution to se how it empties which shows hydrophobicity.
+**(6.1)** **Experiment 2**: Free evolution to se how it empties which shows the hydrophobicity of the pore (this is just an electrostatic effect. The walls of the pore do not interact electrostatically so water prefers stay with water in big bulks rather than in thin pores).
 
 # (7) Clusters of water molecules inside the pore:
 
 - **Note 1**: We will use two different clustering techniques. *Distance* and *Topological* clustering.
+- **Note 2**: The parameters of the switching function to **insert the molecules** and to **pass the set of atoms** to the clustering algorithm need to be set differently. While to insert molecules we use the smoothness of the switching function to define the set of atoms we need something more radical that is usually controled with D_MAX. The problem is that as the switching function (sw) is defined as 1-sw the sense of D_MAX is lost.
+
+To drive and insert molecules inside the pore:
+
+
+To define the set of atoms inside the pore:
 
