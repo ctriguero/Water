@@ -101,10 +101,28 @@
 # (7) Clusters of water molecules inside the pore:
 
 - **Note 1**: We will use two different clustering techniques. *Distance* and *Topological* clustering.
-- **Note 2**: The parameters of the switching function to **insert the molecules** and to **pass the set of atoms** to the clustering algorithm need to be set differently. While to insert molecules we use the smoothness of the switching function to define the set of atoms we need something more radical that is usually controled with D_MAX. The problem is that as the switching function (sw) is defined as 1-sw the sense of D_MAX is lost.
+- **Note 2**: The parameters of the switching function to **insert the molecules** and to **pass the set of atoms** to the clustering algorithm need to be set differently. While to insert molecules we use the smoothness of the switching function to define the set of atoms we need something more radical that is usually controled with D_MAX. The problem is that as the switching function (sw) is defined as 1-sw the sense of D_MAX is lost. This is a problem that should be fix in **PLUMED**.
 
-To drive and insert molecules inside the pore:
+- To drive and insert molecules inside the pore:
 
+d1: DENSITY SPECIES=4201-17700:3 LOWMEM
+fi: INENVELOPE DATA=d1 ATOMS=1-3000 CONTOUR={RATIONAL D_0=0.1 R_0=0.5 D_MAX=10.0} BANDWIDTH=2.5,2.5,0.35 LOWMEM
 
-To define the set of atoms inside the pore:
+- To define the set of atoms inside the pore:
+
+d1: DENSITY SPECIES=4201-17700:3 LOWMEM
+zi: INENVELOPE DATA=d1 ATOMS=1-3000 CONTOUR={RATIONAL D_0=0.5 R_0=0.2} BANDWIDTH=2.5,2.5,0.35 LOWMEM
+matD: CONTACT_MATRIX ATOMS=zi SWITCH={RATIONAL D_0=0.5 R_0=0.1 D_MAX=0.7}  #{RATIONAL D_0=0.8 R_0=0.1 D_MAX=1.0}
+DFSCLUSTERING MATRIX=matD LABEL=ssD
+
+cvD: CLUSTER_PROPERTIES CLUSTERS=ssD CLUSTER=1 SUM
+size1D: CLUSTER_NATOMS CLUSTERS=ssD CLUSTER=1
+size2D: CLUSTER_NATOMS CLUSTERS=ssD CLUSTER=2
+PRINT ARG=cvD.*  FILE=CvD.dat STRIDE=100
+PRINT ARG=size1D FILE=SizeD1.dat STRIDE=100
+PRINT ARG=size2D FILE=SizeD2.dat STRIDE=100
+matA: TOPOLOGY_MATRIX NODES=zi ATOMS=4201-17700:3 BIN_SIZE=0.6 CYLINDER_SWITCH={RATIONAL  R_0=0.05 D_MAX=0.10} SWITCH={RATIONAL D_0=5.0 R_0=2.0 D_MAX=10.0} RADIUS={RATIONAL D_0=0.07 R_0=0.005 D_MAX=0.12} SIGMA=0.34 KERNEL=triangular DENSITY_THRESHOLD={RATIONAL D_0=0.0 R_0=0.001  D_MAX=0.01}
+DFSCLUSTERING MATRIX=matA LABEL=ssA
+cvA: CLUSTER_PROPERTIES CLUSTERS=ssA CLUSTER=1 SUM
+
 
