@@ -56,12 +56,12 @@ int main()
 	std::ifstream IFPUD( "P8d.xyz" ) ;
 
 	std::string line ;
-	unsigned int element ; // Atoms type
-	double x, y, z ; // Coordinates
+	char element ; // Atoms type
+	double x, y, z, xcom, ycom, zcom, xcup, ycup, zcup ; // Coordinates
 	unsigned int Natoms ; // Atoms in the cluster at this specific frame
 	
 	unsigned int FrameCounter = 0 ; // Frame number
-//	std::vector<double> Xx, Yy, Zz ;
+	std::vector<double> Xx, Yy, Zz ;
 
 	while (getline(IFCL1, line))
 	{
@@ -76,35 +76,46 @@ int main()
 			getline(IFCL1, line) ; // Skip 2nd line
 		}
 
-//		//for (int i=0; i<Natoms; i++)
-//		for (int i=0; i<5; i++)
-//		{	
+		for (int i=0; i<Natoms; i++)
+		{	  
 			std::getline(IFCL1, line) ;
 			std::stringstream cc(line) ;
 			cc >> element >> x >> y >> z ;
 
-			std::cout << line << std::endl ;
+			//std::cout << line << std::endl ;
 			std::cout << element << '\t' << x << '\t' << y << '\t' << z << std::endl ;
-////			Xx.push_back (x) ;
-////			Yy.push_back (y) ;
-////			Zz.push_back (z) ;
-////		}
+			Xx.push_back (x) ;
+			Yy.push_back (y) ;
+			Zz.push_back (z) ;
+		}
 
-//		// Extract center of mass of the membrane for this frame
-//		//std::getline(IFCOM, line) ;
-//		//std::getline(IFCOM, line) ;
-//		std::getline(IFCOM, line) ;
-//		//std::stringstream aa(line) ;
-//		aa >> element >> x >> y >> z ;
-//		std::cout << "COM :" << aa << std::endl ;
-//		std::cout << "COM :" << x << '\t' << y << '\t' << z << std::endl ;
-
-
-
-		return 0 ;   
+		// Extract center of mass of the membrane for this frame
+		std::getline(IFCOM, line) ;
+		std::getline(IFCOM, line) ;
+		std::getline(IFCOM, line) ;
+		std::stringstream cc(line) ;
+		cc >> element >> xcom >> ycom >> zcom ;
+		std::cout << "COM :" << xcom << '\t' << ycom << '\t' << zcom << std::endl ;
+		// Extract center of mass of the membrane for this frame
+		std::getline(IFPUC, line) ;
+		std::getline(IFPUC, line) ;
+		std::getline(IFPUC, line) ;
+		std::stringstream dd(line) ;
+		dd >> element >> xcup >> ycup >> zcup ;
+		std::cout << "COM up:" << xcup << '\t' << ycup << '\t' << zcup << std::endl ;
+		// Extract center of mass of the membrane for this frame
+		std::getline(IFPUD, line) ;
+		std::getline(IFPUD, line) ;
+		std::getline(IFPUD, line) ;
+		std::stringstream dd(line) ;
+		dd >> element >> xcdw >> ycdw >> zcdw ;
+		std::cout << "COM up:" << xcdw << '\t' << ycdw << '\t' << zcdw << std::endl ;
+  
 	}
 
 	IFCL1.close() ;
+	IFCOM.close() ;
+	IFPUC.close() ;
 	
 
 
