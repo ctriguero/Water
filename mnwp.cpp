@@ -112,29 +112,26 @@ int main()
 		//std::cout << "COM up:" << xcdw << '\t' << ycdw << '\t' << zcdw << std::endl ;
 		
 		//Percolation CV
+		int Pup=0 ;
+		int Pdw=0 ;
+		//Detect max z in the set
 		double DistanceUp=-1000.0 ;
-		for (int i=0; i<Natoms; i++)
-		{
-			//Detect max z in the set
-			if( Zz[i] > DistanceUp ) 
-			{
-			DistanceUp = Zz[i] ;
-			}
-			//std::cout << DistanceUp << std::endl ;
+		for (int i=0; i<Natoms; i++){ if( Zz[i] > DistanceUp ){ DistanceUp = Zz[i] ; }}
+		if( DistanceUp - zcup < 2.0 ) 
+		{ 
+			std::cout << "Percolation UP" << std::endl ;
+			Pup=1 ;
 		}
-		if( DistanceUp - zcup < 2.0 ) { std::cout << "Percolation UP" << std::endl ; }
-		
+		//Detect min z in the set
 		double DistanceDw=1000.0 ;
-		for (int i=0; i<Natoms; i++)
+		for (int i=0; i<Natoms; i++){ if( Zz[i] < DistanceDw ){ DistanceDw = Zz[i] ; }}
+		if( DistanceDw - zcdw < 2.0 ) 
 		{
-			//Detect max z in the set
-			if( Zz[i] < DistanceDw ) 
-			{
-			DistanceDw = Zz[i] ;
-			}
-			//std::cout << DistanceUp << std::endl ;
+			std::cout << "Percolation DOWN" << std::endl ; 
+			Pdw=1 ;
 		}
-		if( DistanceDw - zcdw < 2.0 ) { std::cout << "Percolation DOWN" << std::endl ; }
+		
+		std::cout << "Percolation = " << BOLDBLUE << Pdw*Pup << RESET << endl ;
 		
 		Xx.clear() ;
 		Yy.clear() ;
@@ -152,7 +149,7 @@ int main()
 	
 	int stop_s=clock();
 	cout << endl ;
-	cout << "Total execution time: " << BOLDBLACK << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << RESET << endl;
+	cout << "Total execution time: " << BOLDRED << (stop_s-start_s)/double(CLOCKS_PER_SEC)*1000 << RESET << endl;
 	
 	return (0) ;
 }
