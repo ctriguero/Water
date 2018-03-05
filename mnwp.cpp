@@ -57,7 +57,7 @@ int main()
 
 	std::string line ;
 	char element ; // Atoms type
-	double x, y, z, xcom, ycom, zcom, xcup, ycup, zcup ; // Coordinates
+	double x, y, z, xcom, ycom, zcom, xcup, ycup, zcup, xcdw, ycdw, zcdw ; // Coordinates
 	unsigned int Natoms ; // Atoms in the cluster at this specific frame
 	
 	unsigned int FrameCounter = 0 ; // Frame number
@@ -79,11 +79,11 @@ int main()
 		for (int i=0; i<Natoms; i++)
 		{	  
 			std::getline(IFCL1, line) ;
-			std::stringstream cc(line) ;
-			cc >> element >> x >> y >> z ;
+			std::stringstream bb(line) ;
+			bb >> element >> x >> y >> z ;
 
 			//std::cout << line << std::endl ;
-			std::cout << element << '\t' << x << '\t' << y << '\t' << z << std::endl ;
+			//std::cout << element << '\t' << x << '\t' << y << '\t' << z << std::endl ;
 			Xx.push_back (x) ;
 			Yy.push_back (y) ;
 			Zz.push_back (z) ;
@@ -95,28 +95,57 @@ int main()
 		std::getline(IFCOM, line) ;
 		std::stringstream cc(line) ;
 		cc >> element >> xcom >> ycom >> zcom ;
-		std::cout << "COM :" << xcom << '\t' << ycom << '\t' << zcom << std::endl ;
+		//std::cout << "COM :" << xcom << '\t' << ycom << '\t' << zcom << std::endl ;
 		// Extract center of mass of the membrane for this frame
 		std::getline(IFPUC, line) ;
 		std::getline(IFPUC, line) ;
 		std::getline(IFPUC, line) ;
 		std::stringstream dd(line) ;
 		dd >> element >> xcup >> ycup >> zcup ;
-		std::cout << "COM up:" << xcup << '\t' << ycup << '\t' << zcup << std::endl ;
+		//std::cout << "COM up:" << xcup << '\t' << ycup << '\t' << zcup << std::endl ;
 		// Extract center of mass of the membrane for this frame
 		std::getline(IFPUD, line) ;
 		std::getline(IFPUD, line) ;
 		std::getline(IFPUD, line) ;
-		std::stringstream dd(line) ;
-		dd >> element >> xcdw >> ycdw >> zcdw ;
-		std::cout << "COM up:" << xcdw << '\t' << ycdw << '\t' << zcdw << std::endl ;
+		std::stringstream ee(line) ;
+		ee >> element >> xcdw >> ycdw >> zcdw ;
+		//std::cout << "COM up:" << xcdw << '\t' << ycdw << '\t' << zcdw << std::endl ;
+		
+		//Percolation CV
+		double DistanceUp=-1000.0 ;
+		for (int i=0; i<Natoms; i++)
+		{
+			//Detect max z in the set
+			if( Zz[i] > DistanceUp ) 
+			{
+			DistanceUp = Zz[i] ;
+			}
+			//std::cout << DistanceUp << std::endl ;
+		}
+		if( DistanceUp - zcup < 2.0 ) { std::cout << "Percolation UP" << std::endl ; }
+		
+		double DistanceDw=1000.0 ;
+		for (int i=0; i<Natoms; i++)
+		{
+			//Detect max z in the set
+			if( Zz[i] < DistanceDw ) 
+			{
+			DistanceDw = Zz[i] ;
+			}
+			//std::cout << DistanceUp << std::endl ;
+		}
+		if( DistanceDw - zcdw < 2.0 ) { std::cout << "Percolation DOWN" << std::endl ; }
+		
+		Xx.clear() ;
+		Yy.clear() ;
+		Zz.clear() ;
   
 	}
 
 	IFCL1.close() ;
 	IFCOM.close() ;
 	IFPUC.close() ;
-	
+	IFPUD.close() ;
 
 
 
